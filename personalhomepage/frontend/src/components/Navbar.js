@@ -16,12 +16,32 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import {BrowserRouter} from "react-router-dom";
 import App from "./App";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {Link} from "@mui/material";
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
-const navHrefs = ["/", "/about", "/contact", "/projects", "/chessgames"]
+const navItemsEn = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
+const navItemsHr = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
+const navItems = navItemsEn
+const navHrefs = ["/", "/about", "/contact", "/projects", "/chessgames"];
+const darkTheme = createTheme({
+    palette: {
+        mode: "dark",
+        background: {
+            default: "#1f1f1f"
+        }
+    }
+})
+const lightTheme = createTheme({
+    palette: {
+        mode: "light",
+    }
+})
+
+var currentTheme = darkTheme;
 
 function DrawerAppBar(props) {
+
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -50,59 +70,64 @@ function DrawerAppBar(props) {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <ThemeProvider theme={currentTheme}>
             <CssBaseline />
-            <AppBar component="nav">
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
+            <Box sx={{ display: 'flex' }}>
+                <AppBar component="nav">
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ display: { sm: 'none' } }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography
+                            variant="h3"
+                            fontFamily={"cursive"}
+                            component="div"
+                            sx={{ flexGrow:"1", display:'flex', textAlign: { xs: "right", sm:"left" }}}
+                        >
+                            <p style={{marginTop:"0", marginBottom:"0", marginRight:"5px", flexGrow:"1"}}>IP</p>
+                        </Typography>
+                        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                            {navItems.map((item) => (
+                                <Link href={navHrefs[navItems.indexOf(item)]} sx={{color: "inherit"}}>
+                                    <Button key={item} sx={{color: "inherit"}}>
+                                        {item}
+                                    </Button>
+                                </Link>
+                            ))}
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+                <nav>
+                    <Drawer
+                        container={container}
+                        variant="temporary"
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
                     >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                    >
-                        Ivo Planinić
-                    </Typography>
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        {navItems.map((item) => (
-                            <Button key={item} sx={{ color: '#fff' }} href={navHrefs[navItems.indexOf(item)]}>
-                                {item}
-                            </Button>
-                        ))}
-                    </Box>
-                </Toolbar>
-            </AppBar>
-            <nav>
-                <Drawer
-                    container={container}
-                    variant="temporary"
-                    open={mobileOpen}
-                    onClose={handleDrawerToggle}
-                    ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
-                    }}
-                    sx={{
-                        display: { xs: 'block', sm: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                >
-                    {drawer}
-                </Drawer>
-            </nav>
-            <Box component="main" sx={{ p: 3 }}>
-                <Toolbar />
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
+                        {drawer}
+                    </Drawer>
+                </nav>
+                <Box component="main" sx={{ p: 3 }}>
+                    <Toolbar />
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </Box>
             </Box>
-        </Box>
+        </ThemeProvider>
     );
 }
 

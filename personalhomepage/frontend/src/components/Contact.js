@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
-import {Grid, Paper, styled} from "@mui/material";
+import {Grid, Link, Paper, styled} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {en} from "./textContent";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -29,6 +29,7 @@ const Contact = () => {
 
     const isMobile = width < 600;
 
+    let iconSize;
     let xsvalue;
     let xbigFontSize;
     let bigFontSize;
@@ -36,6 +37,7 @@ const Contact = () => {
     let smallFontSize;
     let topMargin;
     if(isMobile){
+        iconSize = 50
         topMargin = "0"
         xsvalue = 12;
         xbigFontSize = "28px"
@@ -44,6 +46,7 @@ const Contact = () => {
         smallFontSize = "14px"
     }
     else {
+        iconSize = 65
         topMargin = "10vh"
         xsvalue = 6;
         xbigFontSize = "50px"
@@ -59,16 +62,26 @@ const Contact = () => {
             <Box className={"social-media-container"}>
                 <Grid container>
                     <Grid item xs={xsvalue} sx={{width: "30vw", height:"20vh", textAlign:"center"}}>
-                        IG
+                        <Link target="_blank" href={"https://www.instagram.com/a.certain.magical.gargoyle?igsh=cmttMnA5Zmlxb3d6"}>
+                            <img width={`${iconSize}px`} src={"/static/images/instagram-Logo.png"}
+                                 alt={"instagram logo"}/>
+                        </Link>
                     </Grid>
-                    <Grid item xs={xsvalue} sx={{width: "30vw", height:"20vh", textAlign:"center"}}>
-                        GITHUB
+                    <Grid item xs={xsvalue} sx={{width: "30vw", height: "20vh", textAlign: "center"}}>
+                        <Link target="_blank" href={"https://github.com/pivog"}>
+                            <img width={`${iconSize}px`} src={"/static/images/github-Logo.png"} alt={"github logo"}/>
+                        </Link>
                     </Grid>
-                    <Grid item xs={xsvalue} sx={{width: "30vw", height:"20vh", textAlign:"center"}}>
-                        FACEBOOK
+                    <Grid item xs={xsvalue} sx={{width: "30vw", height: "20vh", textAlign:"center"}}>
+                        <Link target="_blank" href={"https://discordapp.com/users/694960498348916847"}>
+                            <img width={`${iconSize * 2}px`} src={"/static/images/discord-Logo.png"}
+                                 alt={"discord logo"}/>
+                        </Link>
                     </Grid>
-                    <Grid item xs={xsvalue} sx={{width: "30vw", height:"20vh", textAlign:"center"}}>
-                        DISCORD
+                    <Grid item xs={xsvalue} sx={{width: "30vw", height: "20vh", textAlign:"center"}}>
+                        <Link target="_blank" href={"/"}>
+                            Facebook or smthn else
+                        </Link>
                     </Grid>
                 </Grid>
             </Box>

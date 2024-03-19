@@ -58,7 +58,7 @@ function DrawerAppBar(props) {
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }}>
+                        <ListItemButton href={navHrefs[navItems.indexOf(item)]} sx={{ textAlign: 'center' }}>
                             <ListItemText primary={item} />
                         </ListItemButton>
                     </ListItem>
@@ -94,11 +94,9 @@ function DrawerAppBar(props) {
                         </Typography>
                         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                             {navItems.map((item) => (
-                                <Link href={navHrefs[navItems.indexOf(item)]} sx={{color: "inherit"}}>
-                                    <Button key={item} sx={{color: "inherit"}}>
-                                        {item}
-                                    </Button>
-                                </Link>
+                                <Button href={navHrefs[navItems.indexOf(item)]} key={item} sx={{color: "inherit"}}>
+                                    {item}
+                                </Button>
                             ))}
                         </Box>
                     </Toolbar>
@@ -122,7 +120,7 @@ function DrawerAppBar(props) {
                 </nav>
                 <Box component="main" sx={{ p: 3 }}>
                     <Toolbar />
-                    <BrowserRouter>
+                    <BrowserRouter sx={{flexGrow:1}}>
                         <App />
                     </BrowserRouter>
                 </Box>

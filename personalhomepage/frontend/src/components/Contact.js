@@ -79,8 +79,8 @@ const Contact = () => {
                         </Link>
                     </Grid>
                     <Grid item xs={xsvalue} sx={{width: "30vw", height: "20vh", textAlign:"center"}}>
-                        <Link target="_blank" href={"/"}>
-                            Facebook or smthn else
+                        <Link target="_blank" href={"https://chess.com/member/ivop1"}>
+                            <img width={`${iconSize}px`} src={"/static/images/chesscom-Logo.png"} alt={"chess.com logo"}/>
                         </Link>
                     </Grid>
                 </Grid>

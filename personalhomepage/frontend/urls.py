@@ -7,4 +7,5 @@ urlpatterns = [
     path("projects", index),
     path("chessgames", index),
     path("contact", index),
+    path("article", index),
 ]

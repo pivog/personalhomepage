@@ -20,10 +20,10 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Link} from "@mui/material";
 
 const drawerWidth = 240;
-const navItemsEn = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
-const navItemsHr = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
+const navItemsEn = ['Home', 'About', 'Contact', 'Projects', 'Chess Games', "Latinski"];
+const navItemsHr = ['Home', 'About', 'Contact', 'Projects', 'Chess Games', "Latinski"];
 const navItems = navItemsEn
-const navHrefs = ["/", "/about", "/contact", "/projects", "/chessgames"];
+const navHrefs = ["/", "/about", "/contact", "/projects", "/chessgames", "/latinski"];
 const darkTheme = createTheme({
     palette: {
         mode: "dark",
@@ -38,7 +38,7 @@ const lightTheme = createTheme({
     }
 })
 
-var currentTheme = darkTheme;
+const currentTheme = darkTheme;
 
 function DrawerAppBar(props) {
 

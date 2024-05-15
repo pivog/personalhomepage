@@ -13,3 +13,11 @@ class Post(models.Model):
     def __str__(self):
         return str(self.title) + " | " + str(self.author)
 
+
+class ChessGame(models.Model):
+    id = models.IntegerField(primary_key=True)
+    pgn = models.TextField()
+
+    def __str__(self):
+        return "Game " + str(self.id)
+

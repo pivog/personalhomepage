@@ -8,4 +8,5 @@ urlpatterns = [
     path("chessgames", index),
     path("contact", index),
     path("article", index),
+    path("latinski", index),
 ]

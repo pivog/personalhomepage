@@ -8,6 +8,7 @@ import ChessGames from "./ChessGames";
 import Projects from "./Projects";
 import Box from "@mui/material/Box";
 import Article from "./Article";
+import LatinPractice from "./LatinPractice";
 
 const App = () => {
     return (
@@ -20,6 +21,7 @@ const App = () => {
                 <Route path="/chessgames" element={<ChessGames/>}/>
                 <Route path="/article/" element={<Article/>}/>
                 <Route path="/article/:id" element={<Article/>}/>
+                <Route path="/latinski/" element={<LatinPractice/>}/>
             </Routes>
         </Box>
     );

@@ -2,6 +2,7 @@ import random
 
 from django.http import JsonResponse
 from .models import Post, ChessGame
+from django.shortcuts import render, redirect
 
 
 # Create your views here.

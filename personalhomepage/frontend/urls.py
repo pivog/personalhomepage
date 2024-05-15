@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import index
+from .views import index, redirectToCounter
 
 urlpatterns = [
-    path("", index),
+    # path("", index),
+    path("", redirectToCounter), # temporary
     path("about", index),
     path("projects", index),
     path("chessgames", index),

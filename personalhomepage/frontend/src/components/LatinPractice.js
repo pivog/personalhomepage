@@ -3,6 +3,7 @@ import {Input, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {array, arrayOf, string} from "prop-types";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 const LatinPractice = () => {
     let hintBeingUsed = false
@@ -216,11 +217,13 @@ const LatinPractice = () => {
     console.log(unchecked)
     function checkWord() {
         if(document.getElementById("input").value.toLowerCase() === words[wordOnDisplay]){
-            checkedIndicies.push(wordOnDisplay)
-            unchecked = []
-            for (let word in words) {
-                if(!(checkedIndicies.includes(word))) {
-                    unchecked.push(word)
+            if (!hintBeingUsed){
+                checkedIndicies.push(wordOnDisplay)
+                unchecked = []
+                for (let word in words) {
+                    if(!(checkedIndicies.includes(word))) {
+                        unchecked.push(word)
+                    }
                 }
             }
             // unchecked = unchecked.filter((element, index, arr) => {
@@ -234,12 +237,14 @@ const LatinPractice = () => {
             document.getElementById("hint").innerHTML = ""
             wordOnDisplay = randomProperty(unchecked)
             document.getElementById("word").innerHTML = "Riječ na hrvatskom: "+wordOnDisplay
+            document.getElementById("wordsLeft").innerHTML = "Riječi preostalo: "+unchecked.length
             hintBeingUsed = false
         }
     }
     function giveHint(){
         hintBeingUsed = true
         document.getElementById("hint").innerHTML = "hint: "+words[wordOnDisplay]
+        document.getElementById("wordsLeft").innerHTML = "Riječi preostalo: "+unchecked.length
     }
 
     return (
@@ -247,6 +252,9 @@ const LatinPractice = () => {
             <div className={"horizontal-center"}>
                 <h1>Rešetanje latinskog</h1>
                 <br/>
+                <p style={{}} id={"wordsLeft"}>
+                    Riječi preostalo: {unchecked.length}
+                </p>
                 <p style={{fontWeight: 500}} id={"word"}>
                     Riječ na hrvatskom: {wordOnDisplay}
                 </p>
@@ -255,7 +263,7 @@ const LatinPractice = () => {
                 </Input>
                 <br/>
                 <br/>
-                <Button variant={"outlined"} value={"hint"} onClick={giveHint}>Hint</Button>
+                <Button variant={"outlined"} onClick={giveHint}>Rješenje</Button>
                 <p id={"hint"}></p>
                 <br/><br/><br/>
             </div>

@@ -6,29 +6,23 @@ import {Chessboard} from "react-chessboard";
 import Box from "@mui/material/Box";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import {Grid} from "@mui/material";
-import Typography from "@mui/material/Typography";
-import {en} from "./textContent";
 import {
-    ArrowBack,
-    ArrowBackIos,
-    ArrowBackIosNew,
     ArrowBackIosRounded,
-    ArrowForwardIos,
     ArrowForwardIosRounded
 } from "@mui/icons-material";
+import useWindowDimensions from "./windowSizeHook";
 
 
 const ChessGames = () => {
     const [params] = useSearchParams()
-    const [PGN, setPGN] = useState("")
     const [orientation, setOrientation] = useState('white')
     const [moveIndex, setMoveIndex] = useState(0);
     const [moves, setMoves] = useState([]);
     const [boardState, setBoardState] = useState(new Chess())
-    const [width, setWidth] = useState(window.innerWidth);
-    const [height, setHeight] = useState(window.innerHeight);
-    const [widthAvailable, setWidthAvailable] = useState(width - 48);
+    const {width, height} = useWindowDimensions();
+    const [whiteMoves, setWhiteMoves] = useState([]);
+    const [blackMoves, setBlackMoves] = useState([]);
+    const [widthAvailable, setWidthAvailable] = useState(width-48+"px")
 
 
     // const lightTheme = createTheme({
@@ -47,9 +41,6 @@ const ChessGames = () => {
     })
 
     const currentTheme = darkTheme;
-
-
-    const isMobile = width < 600;
 
 
 
@@ -95,12 +86,21 @@ const ChessGames = () => {
                 const game = new Chess()
                 game.loadPgn(data.pgn)
                 setMoves(game.history())
-                if (["SurelyNotAgain", "ivop1", "Ivo Planinic"].includes(game.header().Black)) {
-                    console.log("orientation black")
-                    setOrientation('black')
+                let _whiteMoves = []
+                let _blackMoves = []
+                let _moves = game.history()
+                console.log(_moves.length)
+                for (let i = 0; i < _moves.length/2-0.5; i++) {
+                    _whiteMoves.push(_moves[2*i])
+                    _blackMoves.push(_moves[2*i+1])
                 }
-                else {
-                    console.log("orientation white")
+                if(_moves.length%2 === 1) {
+                    _blackMoves.push(_moves[-1])
+                }
+                setWhiteMoves(_whiteMoves)
+                setBlackMoves(_blackMoves)
+                if (["SurelyNotAgain", "ivop1", "Ivo Planinic"].includes(game.header().Black)) {
+                    setOrientation('black')
                 }
             })
             .catch((err) => {
@@ -111,62 +111,38 @@ const ChessGames = () => {
 
 
     return (
-
-
-        // <ThemeProvider theme={currentTheme}>
-        //     <CssBaseline />
-        //     <Box display={"flex"} margin={"auto"} justifyContent={"space-evenly"}>
-        //         <Box sx={{ width: { xs: "90vw", sm: "550px" },  height: { xs: "90vw", sm: "550px" }}}>
-        //             <Chessboard boardOrientation={orientation} position={boardState.fen()} />
-        //         </Box>
-        //         <div className={""} id={"buttons_container"}>
-        //             <Button onClick={() => {
-        //                 makeAMove()
-        //             }}>
-        //                 NEXT
-        //             </Button>
-        //
-        //             <Button variant="contained" onClick={() => {
-        //                 moveBackwards()
-        //             }}>
-        //                 BACK
-        //             </Button>
-        //         </div>
-        //     </Box>
-        // </ThemeProvider>
         <ThemeProvider theme={currentTheme}>
             <CssBaseline />
-            {/*<Box>*/}
-            {/*    <Grid container width={width-48}>*/}
-            {/*        <Grid item xs={leftXs}></Grid>*/}
-            {/*        <Grid item xs={xsvalue}>*/}
-            {/*            <Chessboard boardOrientation={orientation} position={boardState.fen()} arePiecesDraggable={false} />*/}
-            {/*        </Grid>*/}
-            {/*        <Grid item xs={rightXs}>*/}
-            {/*            <Box display={"flex"} justifyContent={"center"} flexGrow={1} id={"THE BOX"} height={"100%"}>*/}
-            {/*                <Box display={"flex"} alignItems={"end"}>*/}
-            {/*                    <Button variant={"outlined"} onClick={moveBackwards}>Back</Button>*/}
-            {/*                    <Box width={"20px"}/>*/}
-            {/*                    <Button variant={"outlined"} onClick={makeAMove}>Next</Button>*/}
-            {/*                </Box>*/}
-            {/*            </Box>*/}
-            {/*        </Grid>*/}
-            {/*    </Grid>*/}
-            {/*</Box>*/}
-            <Box display={"flex"} sx={{flexDirection: {xs: "column", sm: "row"}}}>
-                <Box sx={{width: {xs: widthAvailable+"px", sm: "70vh"}, marginInline: {xs: "auto", sm: "start"}}}>
+            <Box display={"flex"} sx={{flexDirection: {xs: "column", sm: "row"}, justifyContent:"center", width:(width-48+"px")}} id={"a box"}>
+                <Box sx={{width: {xs: "90vw", sm: "70vh"}, marginInline: {xs: "auto", sm: "0px"}}}>
                     <Chessboard boardOrientation={orientation} position={boardState.fen()} arePiecesDraggable={false} />
                 </Box>
 
                 <Box width={"20px"} height={"20px"}/>
 
-                <Box display={"flex"} justifyContent={"center"} flexGrow={1} id={"THE BOX"} flexDirection={"column"} alignItems={"center"} sx={{ borderRadius:"20px",  height: { xs: "100%", sm: "70vh" }, width: (width-48-20-0.7*height), background:"#272727"}}>
-                    <Box display={"flex"} maxWidth={"30vw"} sx={{background:"#272727"}} height={"100%"} padding={"10px"}>
-                        <Box background={"#ffffff"}/>
-                        <Box width={"20px"}/>
-                        <Box background={"#ffffff"}/>
+                <Box key={width} display={"flex"} justifyContent={"center"} flexGrow={1} id={"THE BOX"} flexDirection={"column"} alignItems={"center"} sx={{ borderRadius:"20px",  height: { xs: "100%", sm: "70vh" }, maxWidth:"700px", width: (width-48-20-0.7*height), background:"#272727"}}>
+                    <Box display={"flex"} maxWidth={"30vw"} sx={{background:"#373737", overflowY:"scroll"}} height={"100%"} flexGrow={1} padding={"10px"}>
+                        <Box background={"#ffffff"} width={"50px"}>
+                            {
+                                whiteMoves.map((move) => (
+                                    <h3>
+                                        {move}
+                                    </h3>
+                                ))
+                            }
+                        </Box>
+                        <Box width={"30px"}/>
+                        <Box background={"#ffffff"} width={"50px"}>
+                            {
+                                blackMoves.map((move, index) => (
+                                    <h3 id={index}>
+                                        {move}
+                                    </h3>
+                                ))
+                            }
+                        </Box>
                     </Box>
-                    <Box display={"flex"} maxWidth={"30vw"} sx={{background:"#272727"}} height={"fit-content"} paddingBottom={"10px"}>
+                    <Box display={"flex"} maxWidth={"30vw"} sx={{background:"#272727"}} height={"fit-content"} paddingY={"10px"}>
                         <Button variant={"contained"} onClick={moveBackwards}><ArrowBackIosRounded width={"20px"}/></Button>
                         <Box width={"20px"}/>
                         <Button variant={"contained"} onClick={makeAMove}><ArrowForwardIosRounded width={"20px"}/></Button>

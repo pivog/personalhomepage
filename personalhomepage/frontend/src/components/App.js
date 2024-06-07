@@ -9,6 +9,7 @@ import Projects from "./Projects";
 import Box from "@mui/material/Box";
 import Article from "./Article";
 import LatinPractice from "./LatinPractice";
+import ProjectShowcase from "./ProjectShowcase";
 
 const App = () => {
     return (
@@ -17,7 +18,8 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact/>}/>
-                <Route path="/projects" element={<Projects/>}/>
+                <Route path="/project/" element={<ProjectShowcase/>}/>
+                <Route exact path="/projects/" element={<Projects/>}/>
                 <Route path="/chessgames" element={<ChessGames/>}/>
                 <Route path="/article/" element={<Article/>}/>
                 <Route path="/article/:id" element={<Article/>}/>

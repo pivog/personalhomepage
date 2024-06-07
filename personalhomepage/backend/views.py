@@ -1,7 +1,7 @@
 import random
 
 from django.http import JsonResponse
-from .models import Post, ChessGame
+from .models import Post, ChessGame, Project
 import re
 
 
@@ -28,10 +28,19 @@ def get_all_articles(request):
         output[post.id] = {
             "title": post.title,
             "body": post.body,
-            "imgurl": post.imageUrl
+            "imgurl": post.imageUrl,
         }
         return JsonResponse(output, status=200)
     return JsonResponse(output, status=404)
+
+
+def get_all_projects(request):
+    projects = Project.objects.all()
+    output = {}
+    for project in projects:
+        output[str(project.id)] = project.title+";"+project.imageUrl
+    return JsonResponse(output, status=200)
+
 
 
 def get_chess_game(request):
@@ -61,3 +70,19 @@ def get_all_chess_games(request):
         f"{game.id}:{re.findall(whiterx, game.pgn)[0][7:-1]}:{re.findall(blackrx, game.pgn)[0][7:-1]}" for game in games
     ])
     return JsonResponse(output, status=200)
+
+
+def get_project(request):
+    projects = Project.objects.all()
+    output = {}
+    for project in projects:
+        print(project.id, request.GET.get("id"))
+        if str(project.id) == str(request.GET.get("id")):
+            output = {
+                "title": project.title,
+                "body": project.body,
+                "urlToSite": project.urlToSite,
+                "imgUrl": project.imageUrl,
+            }
+            return JsonResponse(output, status=200)
+    return JsonResponse(output, status=404)

@@ -33,9 +33,22 @@
     border-radius: 10%;
 }
 
+.project-container {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5px;
+}
+
 .big-image {
     width: 400px;
     height: 400px;
+    object-fit: cover;
+}
+
+.mid-image {
+    width: 150px;
+    height: 150px;
     object-fit: cover;
 }
 

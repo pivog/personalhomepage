@@ -10,4 +10,5 @@ urlpatterns = [
     path("contact", index),
     path("article", index),
     path("latinski", index),
+    path("project", index),
 ]

@@ -2,7 +2,7 @@ import random
 
 from django.http import JsonResponse
 from .models import Post, ChessGame
-from django.shortcuts import render, redirect
+import re
 
 
 # Create your views here.
@@ -39,16 +39,25 @@ def get_chess_game(request):
     output = {}
     if not request.GET.get("id"):
         output = {
-            "pgn": games[random.randint(0, len(games)-1)].pgn
+            "pgn": games[random.randint(0, len(games) - 1)].pgn
         }
         return JsonResponse(output, status=200)
 
     for game in games:
-        print(game.id)
-        print(request.GET.get("id"))
         if str(game.id) == str(request.GET.get("id")):
             output = {
                 "pgn": game.pgn,
             }
             return JsonResponse(output, status=200)
     return JsonResponse(output, status=404)
+
+
+def get_all_chess_games(request):
+    games = ChessGame.objects.all()
+    output = {}
+    whiterx = 'White ".*"'
+    blackrx = 'Black ".*"'
+    output["games"] = ";".join([
+        f"{game.id}:{re.findall(whiterx, game.pgn)[0][7:-1]}:{re.findall(blackrx, game.pgn)[0][7:-1]}" for game in games
+    ])
+    return JsonResponse(output, status=200)

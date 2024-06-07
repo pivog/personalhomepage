@@ -4,6 +4,7 @@ import {Grid, ImageList} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {en, hr} from "./textContent";
 import {Backspace} from "@mui/icons-material";
+import Divider from "@mui/material/Divider";
 
 
 const Home = () => {
@@ -29,38 +30,39 @@ const Home = () => {
     if(isMobile){
         topMargin = "0"
         xsvalue = 12;
-        bigFontSize = "24px"
+        bigFontSize = "20px"
         mediumFontSize = "18px"
         smallFontSize = "14px"
     }
     else {
         topMargin = "10vh"
         xsvalue = 6;
-        bigFontSize = "32px"
-        mediumFontSize = "22px"
+        bigFontSize = "40px"
+        mediumFontSize = "28px"
         smallFontSize = "18px"
     }
 
     return (
-        <Box>
-            <Box height={topMargin}/>
-            <Grid container>
-                <Grid item xs={xsvalue} sx={{justifyContent:"center"}}>
-                    <img className={"center big-image card"} src="/static/images/ivobass.jpeg" alt={"random image"}/>
-                </Grid>
-                <Grid item xs={xsvalue}>
-                    <Box className={"center"} id={"homepage-text"}>
-                        <Box height={"20px"}/>
-                        <Typography fontWeight={"550"} fontSize={bigFontSize} fontFamily={"Times New Roman"}>{en.get("homeText1")}</Typography>
-                        <Box height={"10px"}/>
-                        <Typography fontSize={mediumFontSize} fontFamily={"Times New Roman"}>{en.get("homeText2")}</Typography>
-                        <Box height={"10px"}/>
-                        <Typography fontSize={mediumFontSize} fontFamily={"Times New Roman"}>{en.get("homeText3")}</Typography>
-                    </Box>
-                </Grid>
-            </Grid>
+        <Box justifyContent={"center"} textAlign={"center"} height={"100%"}>
+            <Box height={"5%"}/>
+            <Divider/>
+            <Box height={"80%"}>
+                <Typography fontWeight={"570"} fontSize={bigFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText1")}</Typography>
+            </Box>
+            <Divider/>
+            <Box height={"10%"}/>
+            <Box height={"80%"}>
+                <Typography fontWeight={"570"} fontSize={mediumFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText2")}</Typography>
+            </Box>
+            <Divider/>
+            <Box height={"10%"}/>
+            <Box height={"80%"}>
+                <Typography fontWeight={"570"} fontSize={mediumFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText3")}</Typography>
+            </Box>
+            <Divider/>
+            <Box height={"10%"}/>
         </Box>
-  )
+    )
 }
 
 export default Home;

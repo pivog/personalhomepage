@@ -11,18 +11,21 @@ import {
     ArrowForwardIosRounded
 } from "@mui/icons-material";
 import useWindowDimensions from "./windowSizeHook";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 
 
 const ChessGames = () => {
     const [params] = useSearchParams()
     const [orientation, setOrientation] = useState('white')
-    const [moveIndex, setMoveIndex] = useState(0);
+    const [moveIndex, setMoveIndex] = useState(-1);
     const [moves, setMoves] = useState([]);
     const [boardState, setBoardState] = useState(new Chess())
     const {width, height} = useWindowDimensions();
     const [whiteMoves, setWhiteMoves] = useState([]);
     const [blackMoves, setBlackMoves] = useState([]);
-    const [widthAvailable, setWidthAvailable] = useState(width-48+"px")
+    const [names, setNames] = useState(["Player", "Player"])
+    const [site, setSite] = useState("Site")
 
 
     // const lightTheme = createTheme({
@@ -42,31 +45,31 @@ const ChessGames = () => {
 
     const currentTheme = darkTheme;
 
-
-
-    const moveBackwards = () => {
-        if (moveIndex === 0) {
+    const makeAMove = function (n) {
+        if ((moveIndex === moves.length && n>0) || (moveIndex === 0 && n<0) || n === 0) {
             return
         }
-        const gameCopy = new Chess()
-        gameCopy.loadPgn(moves.slice(0, moveIndex).join("\n"))
-        const result = gameCopy.undo()
-        setBoardState(gameCopy)
-        setMoveIndex(moveIndex - 1)
-        return result
+        goToMoveIndex(moveIndex+n)
     }
 
-    const makeAMove = () => {
-        if (moveIndex === moves.length) {
-            return
+
+
+    useEffect(() =>
+    {
+        const arrowListener = (e) => {
+            if(e.code === "ArrowRight"){
+                makeAMove(1)
+            }
+            if(e.code === "ArrowLeft"){
+                makeAMove(-1)
+            }
         }
-        const gameCopy = new Chess()
-        gameCopy.load(boardState.fen())
-        const result = gameCopy.move(moves[moveIndex])
-        setBoardState(gameCopy)
-        setMoveIndex(moveIndex + 1)
-        return result
-    }
+        document.addEventListener('keydown', arrowListener);
+        return () =>
+        {
+            document.removeEventListener('keydown', arrowListener);
+        }
+    }, [moveIndex])
 
     useEffect(() => {
         // url is the url for the api call with an optional id parameter
@@ -90,16 +93,23 @@ const ChessGames = () => {
                 let _blackMoves = []
                 let _moves = game.history()
                 console.log(_moves.length)
-                for (let i = 0; i < _moves.length/2-0.5; i++) {
+                for (let i = 0; i < _moves.length/2; i++) {
                     _whiteMoves.push(_moves[2*i])
-                    _blackMoves.push(_moves[2*i+1])
                 }
-                if(_moves.length%2 === 1) {
-                    _blackMoves.push(_moves[-1])
+                for (let i = 0; i < _moves.length/2-0.5; i++) {
+                    _blackMoves.push(_moves[2*i+1])
                 }
                 setWhiteMoves(_whiteMoves)
                 setBlackMoves(_blackMoves)
-                if (["SurelyNotAgain", "ivop1", "Ivo Planinic"].includes(game.header().Black)) {
+                let white = game.header().White
+                let black = game.header().Black
+                setNames
+                ([
+                    ["SurelyNotAgain", "ivop1", "Ivo Planinic"].includes(white) ? "Ivo Planinic" : white,
+                    ["SurelyNotAgain", "ivop1", "Ivo Planinic"].includes(black) ? "Ivo Planinic" : black
+                ])
+
+                if (["SurelyNotAgain", "ivop1", "Ivo Planinic"].includes(black)) {
                     setOrientation('black')
                 }
             })
@@ -109,10 +119,30 @@ const ChessGames = () => {
             });
     }, []);
 
+    const goToMoveIndex = (index) => {
+        const _game = new Chess()
+        if (index != -1) _game.loadPgn(moves.slice(0, index+1).join("\n"))
+        setMoveIndex(index)
+        setBoardState(_game)
+    }
+
+    const generateColor = (index) => {
+        if (moveIndex === index) {
+            return "#575757"
+        }
+        return "#373737"
+    }
 
     return (
         <ThemeProvider theme={currentTheme}>
             <CssBaseline />
+            <Box display={"flex"} sx={{flexDirection: {xs: "column", sm: "row"}, justifyContent:"center", width:(width-48+"px")}} id={"a box"}>
+                <Typography variant={"h3"} sx={{display:{xs:"none", sm:"flex"}}}>{names[0]} - {names[1]}</Typography>
+                <Typography variant={"h5"} sx={{display:{xs:"flex", sm:"none"}}}>{names[0]} - {names[1]}</Typography>
+            </Box>
+            <Box height={"5px"}/>
+            <Divider/>
+            <Box height={"10px"}/>
             <Box display={"flex"} sx={{flexDirection: {xs: "column", sm: "row"}, justifyContent:"center", width:(width-48+"px")}} id={"a box"}>
                 <Box sx={{width: {xs: "90vw", sm: "70vh"}, marginInline: {xs: "auto", sm: "0px"}}}>
                     <Chessboard boardOrientation={orientation} position={boardState.fen()} arePiecesDraggable={false} />
@@ -121,31 +151,47 @@ const ChessGames = () => {
                 <Box width={"20px"} height={"20px"}/>
 
                 <Box key={width} display={"flex"} justifyContent={"center"} flexGrow={1} id={"THE BOX"} flexDirection={"column"} alignItems={"center"} sx={{ borderRadius:"20px",  height: { xs: "100%", sm: "70vh" }, maxWidth:"700px", width: (width-48-20-0.7*height), background:"#272727"}}>
-                    <Box display={"flex"} maxWidth={"30vw"} sx={{background:"#373737", overflowY:"scroll"}} height={"100%"} flexGrow={1} padding={"10px"}>
-                        <Box background={"#ffffff"} width={"50px"}>
+
+                    <Box maxWidth={"60vw"} sx={{background:"#272727", display:{xs:"flex", sm:"none"}}} height={"fit-content"} paddingY={"10px"}>
+                        <Button variant={"contained"} onClick={() => {makeAMove(-1)}}><ArrowBackIosRounded width={"20px"}/></Button>
+                        <Box width={"20px"}/>
+                        <Button variant={"contained"} onClick={() => {makeAMove(1)}}><ArrowForwardIosRounded width={"20px"}/></Button>
+                    </Box>
+
+                    <Box maxWidth={"50vw"} sx={{background:"#373737", overflowY:"scroll", borderRadius: {xs:"20px 20px 0 0", sm:"0 0 20px 20px"}, display:{xs:"none", sm:"flex"}}} height={"100%"} flexGrow={1} padding={"20px"}>
+                        <Box background={"#ffffff"}>
                             {
-                                whiteMoves.map((move) => (
-                                    <h3>
+                                whiteMoves.map((item, index) => (
+                                    <h3 style={{padding:"6px", margin:"0"}}>{index+1}.</h3>
+                                ))
+                            }
+                        </Box>
+                        <Box width={"15px"}/>
+                        <Box background={"#ffffff"} width={"60px"}>
+                            {
+                                whiteMoves.map((move, index) => (
+                                    <h3 onClick={() => {goToMoveIndex(2*index)}} id={2*index} style={{background:generateColor(2*index), padding:"6px", margin:"0"}}>
                                         {move}
                                     </h3>
                                 ))
                             }
                         </Box>
-                        <Box width={"30px"}/>
-                        <Box background={"#ffffff"} width={"50px"}>
+                        <Box width={"20px"}/>
+                        <Box background={"#ffffff"} width={"60px"}>
                             {
                                 blackMoves.map((move, index) => (
-                                    <h3 id={index}>
+                                    <h3 onClick={() => {goToMoveIndex(2*index+1)}} id={2*index+1} style={{background:generateColor(2*index+1), padding:"6px 0 6px 10px", margin:"0"}}>
                                         {move}
                                     </h3>
                                 ))
                             }
                         </Box>
                     </Box>
-                    <Box display={"flex"} maxWidth={"30vw"} sx={{background:"#272727"}} height={"fit-content"} paddingY={"10px"}>
-                        <Button variant={"contained"} onClick={moveBackwards}><ArrowBackIosRounded width={"20px"}/></Button>
+
+                    <Box maxWidth={"30vw"} sx={{background:"#272727", display:{xs:"none", sm:"flex"}}} height={"fit-content"} paddingY={"10px"}>
+                        <Button variant={"contained"} onClick={() => {makeAMove(-1)}}><ArrowBackIosRounded width={"20px"}/></Button>
                         <Box width={"20px"}/>
-                        <Button variant={"contained"} onClick={makeAMove}><ArrowForwardIosRounded width={"20px"}/></Button>
+                        <Button variant={"contained"} onClick={() => {makeAMove(1)}}><ArrowForwardIosRounded width={"20px"}/></Button>
                     </Box>
                 </Box>
             </Box>

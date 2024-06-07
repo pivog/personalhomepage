@@ -72,7 +72,7 @@ function DrawerAppBar(props) {
     return (
         <ThemeProvider theme={currentTheme}>
             <CssBaseline />
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex' }} id={"mffffffffffffffffffffffffffffffffffffff"} flexGrow={1}>
                 <AppBar component="nav">
                     <Toolbar>
                         <IconButton
@@ -118,9 +118,9 @@ function DrawerAppBar(props) {
                         {drawer}
                     </Drawer>
                 </nav>
-                <Box component="main" sx={{ p: 3 }}>
+                <Box component="main" sx={{ p: 3 }} id={"maincomponent"} flexGrow={1}>
                     <Toolbar />
-                    <BrowserRouter sx={{flexGrow:1}}>
+                    <BrowserRouter id={"router"} sx={{flexGrow:1}}>
                         <App />
                     </BrowserRouter>
                 </Box>

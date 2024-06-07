@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
-import {Grid, ImageList} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {en, hr} from "./textContent";
-import {Backspace} from "@mui/icons-material";
 import Divider from "@mui/material/Divider";
 
 
@@ -60,7 +58,7 @@ const Home = () => {
                 <Typography fontWeight={"570"} fontSize={mediumFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText3")}</Typography>
             </Box>
             <Divider/>
-            <Box height={"10%"}/>
+            <Box height={"4%"}/>
         </Box>
     )
 }

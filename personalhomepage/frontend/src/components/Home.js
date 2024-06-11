@@ -28,8 +28,8 @@ const Home = () => {
     if(isMobile){
         topMargin = "0"
         xsvalue = 12;
-        bigFontSize = "20px"
-        mediumFontSize = "18px"
+        bigFontSize = "26px"
+        mediumFontSize = "21px"
         smallFontSize = "14px"
     }
     else {
@@ -42,23 +42,23 @@ const Home = () => {
 
     return (
         <Box justifyContent={"center"} textAlign={"center"} height={"100%"}>
-            <Box height={"5%"}/>
+            <Box height={"3vh"}/>
             <Divider/>
-            <Box height={"80%"}>
+            <Box height={"80vh"}>
                 <Typography fontWeight={"570"} fontSize={bigFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText1")}</Typography>
             </Box>
             <Divider/>
-            <Box height={"10%"}/>
-            <Box height={"80%"}>
+            <Box height={"10vh"}/>
+            <Box height={"80vh"}>
                 <Typography fontWeight={"570"} fontSize={mediumFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText2")}</Typography>
             </Box>
             <Divider/>
-            <Box height={"10%"}/>
-            <Box height={"80%"}>
+            <Box height={"10vh"}/>
+            <Box height={"80vh"}>
                 <Typography fontWeight={"570"} fontSize={mediumFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText3")}</Typography>
             </Box>
             <Divider/>
-            <Box height={"4%"}/>
+            <Box height={"4vh"}/>
         </Box>
     )
 }

@@ -13,7 +13,7 @@ import ProjectShowcase from "./ProjectShowcase";
 
 const App = () => {
     return (
-        <Box id={"app box"} width={"100%"} height={"100%"}>
+        <Box id={"app box"} width={"100%"} >
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />

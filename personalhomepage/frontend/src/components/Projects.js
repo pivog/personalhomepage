@@ -7,18 +7,14 @@ import {Link} from "@mui/material";
 
 const Projects = () => {
 
-    const [projectElements, setProjectElements] = useState([]); // example element ["0(id)", "name", "/static/images/ivobass.jpeg"]
+    const [projectElements, setProjectElements] = useState([]); // example element {"id": "0", "title": "placeholder", "imgUrl":"https://image.com"}
 
     useEffect(() => {
         fetch(`/api/getprojects`)
             .then(res => res.json()
                 .then(data => {
                     console.log(data)
-                    let _projectElements = []
-                    Object.keys(data).forEach(key => {
-                        _projectElements.push([key, data[key].split(";")[0], data[key].split(";")[1]]);
-                    });
-                    setProjectElements(_projectElements)
+                    setProjectElements(data)
                 })
         )
     }, []);
@@ -28,13 +24,13 @@ const Projects = () => {
             <Divider/>
             {
                 projectElements.map((value, index) => (
-                    <Link href={`/project?id=${value[0]}`} sx={{textDecoration:"none"}}>
+                    <Link href={`/project?id=${value.id}`} sx={{textDecoration:"none"}}>
                         <Box>
                             <Box height={"10px"}/>
                             <Box width={"100%"} justifyContent={"center"} flexDirection={"row"} display={"flex"}>
-                                <Box width={"fit-content"}><img className={"card mid-image"} src={value[2]} alt={value[2]}/></Box>
+                                <Box width={"fit-content"}><img className={"card mid-image"} src={value.imgUrl} alt={value.imgUrl}/></Box>
                                 <Box width={"20px"}/>
-                                <Box width={"fit-content"}><Typography className={"vertical-center"} sx={{width:"fit-content", color:"#ffffff"}} variant={"h4"}>{value[1]}</Typography></Box>
+                                <Box width={"fit-content"}><Typography className={"vertical-center"} sx={{width:"fit-content", color:"#ffffff"}} variant={"h4"}>{value.title}</Typography></Box>
                             </Box>
                             <Box height={"6px"}/>
                             <Divider/>

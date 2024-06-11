@@ -36,10 +36,10 @@ def get_all_articles(request):
 
 def get_all_projects(request):
     projects = Project.objects.all()
-    output = {}
-    for project in projects:
-        output[str(project.id)] = project.title+";"+project.imageUrl
-    return JsonResponse(output, status=200)
+    output = [{"id": project.id, "title": project.title, "imgUrl": project.imageUrl} for project in projects]
+    # for project in projects:
+    #     output[str(project.id)] = project.title+";"+project.imageUrl
+    return JsonResponse(output, status=200, safe=False)
 
 
 

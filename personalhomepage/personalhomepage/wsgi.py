@@ -11,8 +11,8 @@ import os
 import sys
 
 
-sys.path.append('/home/ubuntu/djangoreact-personal-page/personalhomepage')
-sys.path.append('/home/ubuntu/djangoreact-personal-page/personalhomepage/personalhomepage')
+sys.path.append('/var/www/html/personalhomepage')
+sys.path.append('/var/www/html/personalhomepage/personalhomepage')
 
 
 from django.core.wsgi import get_wsgi_application

@@ -11,6 +11,6 @@ RUN apt -y install python3-pip
 RUN pip3 install --upgrade pip --break-system-packages
 RUN pip3 install -r /var/requirements.txt --break-system-packages
 ADD ./site.conf /etc/apache2/sites-available/000-default.conf
-RUN sudo a2enmod ssl
+RUN a2enmod ssl
 EXPOSE 80 443
 CMD ["apache2ctl", "-D", "FOREGROUND"]

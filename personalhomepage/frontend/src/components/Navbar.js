@@ -20,10 +20,10 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Link} from "@mui/material";
 
 const drawerWidth = 240;
-const navItemsEn = ['Home', 'About', 'Contact', 'Projects', 'Chess Games', "Latinski"];
-const navItemsHr = ['Home', 'About', 'Contact', 'Projects', 'Chess Games', "Latinski"];
+const navItemsEn = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
+const navItemsHr = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
 const navItems = navItemsEn
-const navHrefs = ["/", "/about", "/contact", "/projects", "/chessgames", "/latinski"];
+const navHrefs = ["/", "/about", "/contact", "/projects", "/chessgames"];
 const darkTheme = createTheme({
     palette: {
         mode: "dark",

@@ -10,7 +10,7 @@ if(!(getCookie("language") in ["en", "hr"])) {
 
 render(
     <React.StrictMode sx={{flexGrow:1}}>
-        <Navbar id={"navbar"} sx={{width:"100%"}}/>
+        <Navbar id={"navbar"} sx={{flexGrow:1}}/>
          {/*inside is the browser router in "box component="main""*/}
     </React.StrictMode>,
     root

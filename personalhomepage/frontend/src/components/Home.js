@@ -41,24 +41,24 @@ const Home = () => {
     }
 
     return (
-        <Box justifyContent={"center"} textAlign={"center"} height={"100%"}>
-            <Box height={"3vh"}/>
+        <Box justifyContent={"center"} textAlign={"center"} height={"100vh"}>
+            <Box height={"3%"}/>
             <Divider/>
-            <Box height={"80vh"}>
+            <Box height={"80%"}>
                 <Typography fontWeight={"570"} fontSize={bigFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText1")}</Typography>
             </Box>
             <Divider/>
-            <Box height={"10vh"}/>
-            <Box height={"80vh"}>
+            <Box height={"10%"}/>
+            <Box height={"80%"}>
                 <Typography fontWeight={"570"} fontSize={mediumFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText2")}</Typography>
             </Box>
             <Divider/>
-            <Box height={"10vh"}/>
-            <Box height={"80vh"}>
+            <Box height={"10%"}/>
+            <Box height={"80%"}>
                 <Typography fontWeight={"570"} fontSize={mediumFontSize} fontFamily={"Times New Roman"} className={"vertical-center"}>{en.get("homeText3")}</Typography>
             </Box>
             <Divider/>
-            <Box height={"4vh"}/>
+            <Box height={"4%"}/>
         </Box>
     )
 }

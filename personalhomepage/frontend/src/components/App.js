@@ -13,7 +13,7 @@ import ProjectShowcase from "./ProjectShowcase";
 
 const App = () => {
     return (
-        <Box id={"app box"} width={"100%"} >
+        <Box id={"app box"} flexGrow={1} >
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
@@ -23,7 +23,7 @@ const App = () => {
                 <Route path="/chessgames" element={<ChessGames/>}/>
                 <Route path="/article/" element={<Article/>}/>
                 <Route path="/article/:id" element={<Article/>}/>
-                <Route path="/latinski/" element={<LatinPractice/>}/>
+                <Route path="/latinski/" element={<LatinPractice/>}/>{/* deprecated, removed from navbar */}
             </Routes>
         </Box>
     );

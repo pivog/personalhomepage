@@ -23,7 +23,7 @@ const drawerWidth = 240;
 const navItemsEn = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
 const navItemsHr = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
 const navItems = navItemsEn
-const navHrefs = ["/", "/about", "/contact", "/projects", "/chessgames"];
+const navHrefs = ["/", "/about", "/contact", "/projects", "/listchessgames"];
 const darkTheme = createTheme({
     palette: {
         mode: "dark",

@@ -11,4 +11,5 @@ urlpatterns = [
     path("article", index),
     path("latinski", index),
     path("project", index),
+    path("listchessgames", index),
 ]

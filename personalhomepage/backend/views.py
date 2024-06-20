@@ -61,15 +61,20 @@ def get_chess_game(request):
     return JsonResponse(output, status=404)
 
 
-def get_all_chess_games(request):
+def get_all_chess_games_names(request):
     games = ChessGame.objects.all()
-    output = {}
-    whiterx = 'White ".*"'
-    blackrx = 'Black ".*"'
-    output["games"] = ";".join([
-        f"{game.id}:{re.findall(whiterx, game.pgn)[0][7:-1]}:{re.findall(blackrx, game.pgn)[0][7:-1]}" for game in games
-    ])
-    return JsonResponse(output, status=200)
+    whiteregex = 'White ".*"'
+    blackregex = 'Black ".*"'
+    siteregex = 'Site ".*"'
+    output = [
+        {
+            "id": game.id,
+            "white": re.findall(whiteregex, game.pgn)[0][7:-1],
+            "black": re.findall(blackregex, game.pgn)[0][7:-1],
+            "site": re.findall(siteregex, game.pgn)[0][6:-1],
+        } for game in games
+    ]
+    return JsonResponse(output, status=200, safe=False)
 
 
 def get_project(request):

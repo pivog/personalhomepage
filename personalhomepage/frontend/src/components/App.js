@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import Article from "./Article";
 import LatinPractice from "./LatinPractice";
 import ProjectShowcase from "./ProjectShowcase";
+import ListAllChessGames from "./ListAllChessGames";
 
 const App = () => {
     return (
@@ -20,7 +21,8 @@ const App = () => {
                 <Route path="/contact" element={<Contact/>}/>
                 <Route path="/project/" element={<ProjectShowcase/>}/>
                 <Route exact path="/projects/" element={<Projects/>}/>
-                <Route path="/chessgames" element={<ChessGames/>}/>
+                <Route path="/chessgames/" element={<ChessGames/>}/>
+                <Route exact path="/listchessgames/" element={<ListAllChessGames/>}/>
                 <Route path="/article/" element={<Article/>}/>
                 <Route path="/article/:id" element={<Article/>}/>
                 <Route path="/latinski/" element={<LatinPractice/>}/>{/* deprecated, removed from navbar */}

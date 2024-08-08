@@ -3,12 +3,30 @@ import Box from "@mui/material/Box";
 import {Link} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import {getCookie} from "./CookiesMainpulation";
+import {useNavigate} from "react-router-dom";
 
-const ListAllChessGames = () => {
+const ListAllPersonalChesGames = () => {
     const [gamesNames, setGamesNames] = useState([])
+    let navigate = useNavigate()
 
     useEffect(() => {
-        fetch("/api/getchessgamesnames").then(res => res.json()).then(data => setGamesNames(data))
+
+        if(getCookie("token") === undefined){ // missing token
+            return navigate("/login")
+        }
+
+        fetch("/api/getpersonalchessgamesnames", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                token: getCookie("token"),
+                crsfToken: "",
+            })
+            }
+        ).then(res => res.json()).then(data => setGamesNames(data))
     }, []);
 
     return (
@@ -25,7 +43,7 @@ const ListAllChessGames = () => {
             {
                 gamesNames.map((game, index) => (
 
-                    <Link href={`/chessgames?id=${game.id}`} sx={{textDecoration:"none"}}>
+                    <Link href={`/personalchessgame?id=${game.id}`} sx={{textDecoration:"none"}}>
                         <Box>
                             <Box height={"10px"}/>
                             <Box width={"100%"} justifyContent={"center"} flexDirection={"row"} display={"flex"} height={"170px"}>
@@ -41,7 +59,7 @@ const ListAllChessGames = () => {
                                                 <Box width={"20px"}/>
                                                 <Box width={"fit-content"}><Typography className={"vertical-center"} sx={{width:"fit-content", color:"#ffffff", fontSize:{xs:"20px", sm:"40px"}, display:{xs:'none', sm:'flex'}}}>({game.site})</Typography></Box>
                                             </>
-                                    ) : (<></>)
+                                        ) : (<></>)
                                     ]
                                 }
                             </Box>
@@ -56,4 +74,4 @@ const ListAllChessGames = () => {
     )
 }
 
-export default ListAllChessGames;
+export default ListAllPersonalChesGames;

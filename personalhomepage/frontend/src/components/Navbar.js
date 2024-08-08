@@ -18,6 +18,8 @@ import {BrowserRouter} from "react-router-dom";
 import App from "./App";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Link} from "@mui/material";
+import {getCookie} from "./CookiesMainpulation";
+import {useState} from "react";
 
 const drawerWidth = 240;
 const navItemsEn = ['Home', 'About', 'Contact', 'Projects', 'Chess Games'];
@@ -43,6 +45,7 @@ const currentTheme = darkTheme;
 function DrawerAppBar(props) {
 
     const { window } = props;
+    const [username, setUsername] = useState(getCookie("username"));
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const handleDrawerToggle = () => {
@@ -88,11 +91,26 @@ function DrawerAppBar(props) {
                             variant="h3"
                             fontFamily={"cursive"}
                             component="div"
-                            sx={{ flexGrow:"1", display:'flex', textAlign: { xs: "right", sm:"left" }}}
+                            sx={{flexGrow: "1", display: 'flex', textAlign: {xs: "right", sm: "left"}}}
                         >
-                            <p style={{marginTop:"0", marginBottom:"0", marginRight:"5px", flexGrow:"1"}}>IP</p>
+                            <p style={{marginTop: "0", marginBottom: "0", marginRight: "5px", flexGrow: "1"}}>
+                                IP
+                            </p>
+
+                            <span style={{fontSize: "18px", flexGrow:"1"}}>
+                                {
+                                    (() => {
+
+                                        if (username !== undefined) {
+                                            return "Logged in as " + username;
+                                        }
+
+                                        return ""
+                                    })()
+                                }
+                            </span>
                         </Typography>
-                        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                        <Box sx={{display: {xs: 'none', sm: 'block'}}}>
                             {navItems.map((item) => (
                                 <Button href={navHrefs[navItems.indexOf(item)]} key={item} sx={{color: "inherit"}}>
                                     {item}
@@ -121,7 +139,7 @@ function DrawerAppBar(props) {
                 <Box component="main" sx={{ p: 3 }} id={"maincomponent"} flexGrow={1}>
                     <Toolbar />
                     <BrowserRouter id={"router"} sx={{flexGrow:1}}>
-                        <App />
+                        <App setUsername={(_username)=>setUsername(_username)} />
                     </BrowserRouter>
                 </Box>
             </Box>
@@ -129,12 +147,5 @@ function DrawerAppBar(props) {
     );
 }
 
-DrawerAppBar.propTypes = {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window: PropTypes.func,
-};
 
 export default DrawerAppBar;

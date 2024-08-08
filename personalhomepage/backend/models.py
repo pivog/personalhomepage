@@ -32,3 +32,20 @@ class ChessGame(models.Model):
 
     def __str__(self):
         return "Game " + str(self.id)
+
+
+class PersonalChessGame(models.Model):
+    id = models.IntegerField(primary_key=True, unique=True)
+    pgn = models.TextField()
+
+    def __str__(self):
+        return "Game " + str(self.id)
+
+
+class AdminUser(models.Model):
+    id = models.IntegerField(primary_key=True, unique=True)
+    username = models.TextField()
+    password = models.TextField()
+
+    def __str__(self):
+        return str(self.id) + " | " + str(self.username)

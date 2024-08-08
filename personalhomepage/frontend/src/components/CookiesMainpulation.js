@@ -5,5 +5,5 @@ export function getCookie(key) {
 }
 
 export function setCookie(key, value) {
-    Cookies.set(key, value)
+    Cookies.set(key, value, { secure: true, sameSite: 'strict' })
 }

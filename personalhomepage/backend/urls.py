@@ -9,5 +9,5 @@ urlpatterns = [
     path("getpersonalchessgamesnames", get_all_personal_chess_games_names),
     path("getprojects", get_all_projects),
     path("getproject", get_project),
-    path("login", login),
+    path("login", login)
 ]

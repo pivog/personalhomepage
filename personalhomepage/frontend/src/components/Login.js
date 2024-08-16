@@ -11,7 +11,7 @@ const Login = (props) => {
     let navigate = useNavigate()
     function login(formEvent) {
         formEvent.preventDefault()
-        let username = formEvent.target.elements.username.value;
+        let username = formEvent.target.username.value;
         let password = formEvent.target.password.value;
         fetch("/api/login", {
                 method: "POST",
@@ -27,16 +27,16 @@ const Login = (props) => {
             //check status code(guard clause)
             if (res.status !== 200) {
                 alert("Wrong username or password");
-                return
             }
-            //convert json to js obejct
-            let data = res.json()
+            return res
+        }).then(res => res.json()
+            .then(data => {
 
-            setCookie("token", data.token);
-            setCookie("username", data.user.username);
-            props.setUsername(data.user.username);
-            navigate("/listpersonalchessgames")
-        })
+                alert(data["token"])
+                setCookie("token", data.token);
+                setCookie("username", username);
+                props.setUsername(username);
+                navigate("/listpersonalchessgames")}))
     }
 
     return (

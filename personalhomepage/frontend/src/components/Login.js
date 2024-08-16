@@ -31,8 +31,6 @@ const Login = (props) => {
             return res
         }).then(res => res.json()
             .then(data => {
-
-                alert(data["token"])
                 setCookie("token", data.token);
                 setCookie("username", username);
                 props.setUsername(username);

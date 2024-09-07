@@ -8,7 +8,7 @@ RUN apt -y install python3 libapache2-mod-wsgi-py3
 #RUN ln /usr/bin/python3 /usr/bin/python
 RUN apt -y install python3-pip
 #RUN ln /usr/bin/pip3 /usr/bin/pip
-RUN pip3 install --upgrade pip --break-system-packages
+# RUN pip3 install --upgrade pip --break-system-packages
 RUN pip3 install -r /var/requirements.txt --break-system-packages
 ADD ./site.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod ssl

@@ -91,8 +91,8 @@ def get_all_personal_chess_games_names(request):
 
     # check token
     user = get_object_or_404(Token, key=request.data['token']).user
-    # if not user.is_superuser:
-    #     return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+    if not user.is_superuser:
+        return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
     games = PersonalChessGame.objects.all()
     whiteregex = 'White ".*"'

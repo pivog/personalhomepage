@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useSearchParams} from "react-router-dom";
 import { Chess } from "chess.js"
 import Button from "@mui/material/Button";
@@ -13,12 +13,15 @@ import {
 import useWindowDimensions from "./windowSizeHook";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import MovesDesktop from "./elements/movesDesktop";
+import PropTypes from "prop-types";
+import MovesStripMobileOnly from "./elements/moveStripMobile";
 
 
 const ChessGames = () => {
     const [params] = useSearchParams()
     const [orientation, setOrientation] = useState('white')
-    const [moveIndex, setMoveIndex] = useState(-1);
+    const [moveIndex, setMoveIndex] = useState(0);
     const [moves, setMoves] = useState([]);
     const [boardState, setBoardState] = useState(new Chess())
     const {width, height} = useWindowDimensions();
@@ -26,6 +29,7 @@ const ChessGames = () => {
     const [blackMoves, setBlackMoves] = useState([]);
     const [names, setNames] = useState(["Player", "Player"])
     const [site, setSite] = useState("Site")
+    const movesDesktopRef = useRef();
 
 
     // const lightTheme = createTheme({
@@ -46,6 +50,7 @@ const ChessGames = () => {
     const currentTheme = darkTheme;
 
     const makeAMove = function (n) {
+        // Move n moves ahead(one move means a player moves a piece, not a turn for one player each)
         if ((moveIndex === moves.length && n>0) || (moveIndex === 0 && n<0) || n === 0) {
             return
         }
@@ -54,6 +59,7 @@ const ChessGames = () => {
 
 
 
+    // Arrow buttin listener
     useEffect(() =>
     {
         const arrowListener = (e) => {
@@ -71,6 +77,7 @@ const ChessGames = () => {
         }
     }, [moveIndex])
 
+    // Fetching the chess game
     useEffect(() => {
         // url is the url for the api call with an optional id parameter
         let id = params.get("id")
@@ -121,11 +128,11 @@ const ChessGames = () => {
 
     const goToMoveIndex = (index) => {
         const _game = new Chess()
-        if (index != -1) {
-            _game.loadPgn(moves.slice(0, index+1).join("\n"))
+        if (index => 0) {
+            _game.loadPgn(moves.slice(0, index).join("\n"))
+            setMoveIndex(index)
+            setBoardState(_game)
         }
-        setMoveIndex(index)
-        setBoardState(_game)
     }
 
     const generateColor = (index) => {
@@ -135,66 +142,12 @@ const ChessGames = () => {
         return "#373737"
     }
 
-    const MovesDesktop = (props) => {
-        return (
-            <Box maxWidth={"50vw"} sx={{background:"#373737", overflowY:"scroll", borderRadius: {xs:"20px 20px 0 0", sm:"0 0 20px 20px"}, display:{xs:"none", sm:"flex"}}} height={"100%"} flexGrow={1} padding={"20px"}>
-            <Box background={"#ffffff"}>
-                {
-                    whiteMoves.map((item, index) => (
-                        <h3 style={{padding:"6px", margin:"0"}}>{index+1}.</h3>
-                    ))
-                }
-            </Box>
-            <Box width={"15px"}/>
-            <Box background={"#ffffff"} width={"60px"}>
-                {
-                    whiteMoves.map((move, index) => (
-                        <h3 onClick={() => {goToMoveIndex(2*index)}} id={2*index} style={{background:generateColor(2*index), padding:"6px", margin:"0"}}>
-                            {move}
-                        </h3>
-                    ))
-                }
-            </Box>
-            <Box width={"20px"}/>
-            <Box background={"#ffffff"} width={"60px"}>
-                {
-                    blackMoves.map((move, index) => (
-                        <h3 onClick={() => {goToMoveIndex(2*index+1)}} id={2*index+1} style={{background:generateColor(2*index+1), padding:"6px 0 6px 10px", margin:"0"}}>
-                            {move}
-                        </h3>
-                    ))
-                }
-            </Box>
-        </Box>
-        )
-    }
-
-    const MovesStripMobileOnly = (props) => {
-        return (
-            <Box sx={{display:{xs:"flex", sm:"none"}, overflowX:"scroll"}} height={"fit-content"} paddingY={"6px"} width={"100%"}>
-                {
-                    moves.map((move, index) => (
-                        <>
-                            {
-                                (index % 2 === 0) ? <Typography sx={{display:{xs:"inline-block"}, padding: "6px", margin: "0", background:"#373737"}}>{index / 2 + 1}.</Typography> : <></>
-                            }
-                            <Typography onClick={() => { goToMoveIndex(index) }} id={(index)+"mobileStrip"} style={{display:{xs:"inline-block"}, background: generateColor(index), padding: "6px", margin: "0"}}>
-                                {move}
-                            </Typography>
-                        </>
-
-                    ))
-                }
-            </Box>
-        )
-    }
-
     const ButtonsMobile = (props) => {
         return (
             <Box maxWidth={"60vw"} sx={{background:"#272727", display:{xs:"flex", sm:"none"}}} height={"fit-content"} paddingY={"10px"}>
-                <Button variant={"contained"} onClick={() => {makeAMove(-1)}}><ArrowBackIosRounded width={"20px"}/></Button>
+                <Button variant="contained" onClick={() => {makeAMove(-1)}}><ArrowBackIosRounded width={"20px"}/></Button>
                 <Box width={"20px"}/>
-                <Button variant={"contained"} onClick={() => {makeAMove(1)}}><ArrowForwardIosRounded width={"20px"}/></Button>
+                <Button variant="contained" onClick={() => {makeAMove(1)}}><ArrowForwardIosRounded width={"20px"}/></Button>
             </Box>
         )
     }
@@ -202,9 +155,9 @@ const ChessGames = () => {
     const ButtonsDesktop = (props) => {
         return (
             <Box maxWidth={"30vw"} sx={{background:"#272727", display:{xs:"none", sm:"flex"}}} height={"fit-content"} paddingY={"10px"}>
-                <Button variant={"contained"} onClick={() => {makeAMove(-1)}}><ArrowBackIosRounded width={"20px"}/></Button>
+                <Button variant="contained" onClick={() => {makeAMove(-1)}}><ArrowBackIosRounded width={"20px"}/></Button>
                 <Box width={"20px"}/>
-                <Button variant={"contained"} onClick={() => {makeAMove(1)}}><ArrowForwardIosRounded width={"20px"}/></Button>
+                <Button variant="contained" onClick={() => {makeAMove(1)}}><ArrowForwardIosRounded width={"20px"}/></Button>
             </Box>
         )
     }
@@ -212,8 +165,8 @@ const ChessGames = () => {
     const Names = () => {
         return (
             <Box display={"flex"} sx={{flexDirection: {xs: "column", sm: "row"}, justifyContent:"center", width:(width-48+"px")}} id={"a box"}>
-            <Typography variant={"h3"} sx={{display:{xs:"none", sm:"flex"}}}>{names[0]} - {names[1]}</Typography>
-            <Typography variant={"h5"} sx={{display:{xs:"flex", sm:"none"}}}>{names[0]} - {names[1]}</Typography>
+            <Typography variant="h3" sx={{display:{xs:"none", sm:"flex"}}}>{names[0]} - {names[1]}</Typography>
+            <Typography variant="h5" sx={{display:{xs:"flex", sm:"none"}}}>{names[0]} - {names[1]}</Typography>
         </Box>
         )
     }
@@ -235,7 +188,7 @@ const ChessGames = () => {
             <Box height={"10px"}/>
             <Box display={"flex"} sx={{flexDirection: {xs: "column", sm: "row"}, justifyContent:"center", width:(width-48+"px")}} id={"a box"}>
 
-                <MovesStripMobileOnly/>
+                {/*<MovesStripMobileOnly moves={moves} goToMoveIndex={goToMoveIndex} />*/}
 
                 <Box height={"20px"}/>
 
@@ -250,7 +203,9 @@ const ChessGames = () => {
 
                     <ButtonsMobile/>
 
-                    <MovesDesktop/>
+                    <Box ref={movesDesktopRef} height={"80%"} flexGrow={1}>
+                        <MovesDesktop whiteMoves={whiteMoves} blackMoves={blackMoves} goToMoveIndex={goToMoveIndex} generateColor={generateColor} moveIndex={moveIndex} boxRef={movesDesktopRef.current}/>
+                    </Box>
 
                     <ButtonsDesktop/>
 

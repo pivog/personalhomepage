@@ -14,6 +14,7 @@ import useWindowDimensions from "./windowSizeHook";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import {getCookie} from "./CookiesMainpulation";
+import MovesStripMobileOnly from "./elements/moveStripMobile";
 
 
 const PersonalChessGame = () => {
@@ -181,26 +182,6 @@ const PersonalChessGame = () => {
         )
     }
 
-    const MovesStripMobileOnly = (props) => {
-        return (
-            <Box sx={{display:{xs:"flex", sm:"none"}, overflowX:"scroll"}} height={"fit-content"} paddingY={"6px"} width={"100%"}>
-                {
-                    moves.map((move, index) => (
-                        <>
-                            {
-                                (index % 2 === 0) ? <Typography sx={{display:{xs:"inline-block"}, padding: "6px", margin: "0", background:"#373737"}}>{index / 2 + 1}.</Typography> : <></>
-                            }
-                            <Typography onClick={() => { goToMoveIndex(index) }} id={(index)+"mobileStrip"} style={{display:{xs:"inline-block"}, background: generateColor(index), padding: "6px", margin: "0"}}>
-                                {move}
-                            </Typography>
-                        </>
-
-                    ))
-                }
-            </Box>
-        )
-    }
-
     const ButtonsMobile = (props) => {
         return (
             <Box maxWidth={"60vw"} sx={{background:"#272727", display:{xs:"flex", sm:"none"}}} height={"fit-content"} paddingY={"10px"}>
@@ -247,7 +228,7 @@ const PersonalChessGame = () => {
             <Box height={"10px"}/>
             <Box display={"flex"} sx={{flexDirection: {xs: "column", sm: "row"}, justifyContent:"center", width:(width-48+"px")}} id={"a box"}>
 
-                <MovesStripMobileOnly/>
+                <MovesStripMobileOnly moves={moves} goToMoveIndex={goToMoveIndex}/>
 
                 <Box height={"20px"}/>
 

@@ -17,7 +17,6 @@ import Button from '@mui/material/Button';
 import {BrowserRouter} from "react-router-dom";
 import App from "./App";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-import {Link} from "@mui/material";
 import {getCookie} from "./CookiesMainpulation";
 import {useState} from "react";
 
@@ -75,7 +74,7 @@ function DrawerAppBar(props) {
     return (
         <ThemeProvider theme={currentTheme}>
             <CssBaseline />
-            <Box sx={{ display: 'flex' }} id={"mffffffffffffffffffffffffffffffffffffff"} flexGrow={1}>
+            <Box sx={{ display: 'flex' }} flexGrow={1}>
                 <AppBar component="nav">
                     <Toolbar>
                         <IconButton
@@ -93,11 +92,13 @@ function DrawerAppBar(props) {
                             component="div"
                             sx={{flexGrow: "1", display: 'flex', textAlign: {xs: "right", sm: "left"}}}
                         >
-                            <p style={{marginTop: "0", marginBottom: "0", marginRight: "5px", flexGrow: "1"}}>
-                                IP
-                            </p>
+                            <a href={"/"} style={{ color: "#ffffff", textDecoration: "none" }}>
+                                <p style={{marginTop: "0", marginBottom: "0", marginRight: "5px", flexGrow: "1"}}>
+                                    IP
+                                </p>
+                            </a>
 
-                            <span style={{fontSize: "18px", flexGrow:"1"}}>
+                            <span style={{fontSize: "18px", flexGrow: "1"}}>
                                 {
                                     (() => {
 
@@ -110,7 +111,7 @@ function DrawerAppBar(props) {
                                 }
                             </span>
                         </Typography>
-                        <Box sx={{display: {xs: 'none', sm: 'block'}}}>
+                    <Box sx={{display: {xs: 'none', sm: 'block'}}}>
                             {navItems.map((item) => (
                                 <Button href={navHrefs[navItems.indexOf(item)]} key={item} sx={{color: "inherit"}}>
                                     {item}

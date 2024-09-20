@@ -5,6 +5,7 @@ from .views import index
 urlpatterns = [
     # re_path(r".*", index),
     path("", index),
+    path("latinskiglagoli", index),
     path("about", index),
     path("projects", index),
     path("chessgames", index),

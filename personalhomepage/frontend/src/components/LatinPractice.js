@@ -52,7 +52,6 @@ const LatinPractice = () => {
         'u na; s akuz ima i značenje: prema protiv':'in',
         'muževnost hrabrost krepost; vrlina':'virtus utis f',
         'reći kazati; nazvati imenovati':'dico 3 dixi dictum',
-        'ne da ne;',
         'živjeti':'vivo 3 vixi',
         'djeca':'liberi orum m',
         'Romul mitski utemeljitelj Rima':'Romulus i m',

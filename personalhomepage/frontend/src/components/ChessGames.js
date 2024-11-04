@@ -188,7 +188,7 @@ const ChessGames = () => {
             <Box height={"10px"}/>
             <Box display={"flex"} sx={{flexDirection: {xs: "column", sm: "row"}, justifyContent:"center", width:(width-48+"px")}} id={"a box"}>
 
-                {/*<MovesStripMobileOnly moves={moves} goToMoveIndex={goToMoveIndex} />*/}
+                <MovesStripMobileOnly moves={moves} goToMoveIndex={goToMoveIndex} generateColor={generateColor} moveIndex={moveIndex} />
 
                 <Box height={"20px"}/>
 

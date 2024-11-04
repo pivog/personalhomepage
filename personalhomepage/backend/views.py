@@ -3,7 +3,7 @@ import random
 from django.http import JsonResponse
 from django.utils.datastructures import MultiValueDictKeyError
 
-from .models import Post, ChessGame, Project, PersonalChessGame
+from .models import Post, ChessGame, Project, PersonalChessGame, LatinWords
 import re
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -170,3 +170,18 @@ def get_personal_chess_game(request):
             }
             return JsonResponse(output, status=200)
     return JsonResponse(output, status=404)
+
+
+@api_view(['POST'])
+def get_latin_words(request):
+    selected_ids = request.data["selected"].split(" ")
+    print(selected_ids)
+    words = set()
+    words_dict = {}
+    for vjezba in LatinWords.objects.all():
+        if str(vjezba.excercise_id) in selected_ids:
+            for word in vjezba.words.split("\n"):
+                words.add(word)
+    words_dict = dict([(word[0], word[1]) for word in [word.replace("'", "").replace("\r", "").split(":") for word in words]])
+    print(words_dict)
+    return JsonResponse(words_dict, status=200)

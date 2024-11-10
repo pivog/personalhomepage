@@ -1,105 +1,149 @@
 import React, {useEffect, useState} from "react";
-import {Dialog, DialogContent, DialogTitle, Grid, Input, TextField} from "@mui/material";
-import Typography from "@mui/material/Typography";
-import PropTypes, {array, arrayOf, string} from "prop-types";
+import {Dialog, DialogActions, DialogContent, DialogTitle, Grid, Input} from "@mui/material";
+import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import {setCookie} from "./CookiesMainpulation";
 import {getCookie} from "./CookiesMainpulation";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import ListItem from "@mui/material/ListItem";
+import getCSRFCookie from "./csrf";
+import Typography from "@mui/material/Typography";
 
 
+const ButtonSelectionDialog = (props) => {
+    const available = ["31", "32", "33", "34", "35", "36", "37"]
+  const [selectedButtons, setSelectedButtons] = useState(available.map((value, _)=>{
+      return [value, props.selected.includes(value)]
+  }));
 
-
-const SettingsDialog = (props) => {
-    const { onClose, selectedValue, open } = props;
-
-  const handleClose = () => {
-    onClose(selectedValue);
+  // Handler for selecting/deselecting buttons
+  const handleButtonClick = (index) => {
+    setSelectedButtons((prev) =>
+      prev.map((selected, i) => (i === index ? [selected[0], !selected[1]] : selected))
+    );
   };
 
-  const handleListItemClick = (value) => {
-    onClose(value);
+  // Handler for save button click
+  const handleSave = () => {
+      let selectedIds = []
+      selectedButtons.forEach((current) => {
+          if (current[1]) {
+              selectedIds.push(current[0])
+          }
+      })
+    props.onSave(selectedIds);
+    props.onClose(); // Close the dialog
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle>Odaberi Vježbe</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2} justifyContent="center">
-            {[1, 2, 3, 4, 5].map((number) => (
-              <Grid item key={number}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    minWidth: '60px',
-                    minHeight: '60px',
-                    borderRadius: 0,
-                    backgroundColor: '#1976d2',
-                    color: '#fff',
-                  }}
-                >
-                  {number}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
-        </DialogContent>
+      <DialogContent>
+        <Grid container spacing={2} justifyContent="center">
+          {/* Row for square buttons */}
+          {selectedButtons.map((button, index) => (
+            <Grid item key={index}>
+              <Button
+                variant="contained"
+                style={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: button[1] ? '#1976d2' : '#d3d3d3', // blue if selected, gray if not
+                  color: button[1] ? 'white' : 'black',
+                }}
+                onClick={() => handleButtonClick(index)}
+              >
+                {button[0]}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleSave} color="primary">
+          Spasi
+        </Button>
+      </DialogActions>
     </Dialog>
   );
-}
-SettingsDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
+};
+ButtonSelectionDialog.propTypes = {
     open: PropTypes.bool.isRequired,
-    selectedValue: PropTypes.string.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    selected: PropTypes.array.isRequired,
 }
+
 
 const Tester = (props) => {
 
-    const [openSettings, setOpenSettings] = React.useState(false);
-    const [selectedValue, setSelectedValue] = React.useState(props.vjezbe_ids);
+    const [openSettings, setOpenSettings] = React.useState((getCookie("vjezbe_ids") === undefined) ? true: false);
+    const handleSave = (selected) => {
+        setCookie('vjezbe_ids', selected.join(' '))
+        props.setVjezbe_ids(selected)
+    }
+    const closeSettings = () => {
+        setOpenSettings(false)
+    }
 
-    let hintBeingUsed = false
-    const randomProperty = function (object) {
+    const [hintBeingUsed, setHintBeingUsed] = useState(false)
+    const [checkedIndicies, setCheckedIndicies] = useState([])
+    const [unchecked, setUnchecked] = useState(Object.keys(props.words))
+    const [wordOnDisplay, setWordOnDisplay] = useState(randomProperty(Object.keys(props.words)))
+
+    function resetInput() {
+        document.getElementById("input").value = ""
+        setHintBeingUsed(false)
+        setWordOnDisplay(randomProperty(unchecked))
+    }
+    function resetAll() {
+        resetInput()
+        let _checkedIndicies = []
+        let _unchecked = Object.keys(props.words)
+        setCheckedIndicies(_checkedIndicies)
+        setUnchecked(_unchecked)
+
+    }
+
+    function randomProperty (object) {
         const keys = Object.keys(object);
         return object[keys[Math.floor(keys.length * Math.random())]];
-    };
-    let internalScore = Object.keys(props.words).length
-    let checkedIndicies = []
-    let unchecked = Object.keys(props.words)
-    let wordOnDisplay = randomProperty(unchecked)
-    console.log(unchecked)
+    }
+
+    useEffect(() => {
+        resetAll()
+    }, [props.words]);
+
+    useEffect(() => {
+        resetInput()
+    }, [unchecked]);
+
     function checkWord() {
-        if(document.getElementById("input").value.toLowerCase() === words[wordOnDisplay].toLowerCase()){
+        if(document.getElementById("input").value.toLowerCase() === props.words[wordOnDisplay].toLowerCase()){
             if (!hintBeingUsed){
-                checkedIndicies.push(wordOnDisplay)
-                unchecked = []
+                let _checkedIndicies = checkedIndicies
+                _checkedIndicies.push(wordOnDisplay)
+                let _unchecked = []
                 for (let word in props.words) {
-                    if(!(checkedIndicies.includes(word))) {
-                        unchecked.push(word)
+                    if(!(_checkedIndicies.includes(word))) {
+                        _unchecked.push(word)
                     }
                 }
+                if(Object.keys(_unchecked).length === 0) {
+                    resetInput()
+                    _checkedIndicies = []
+                    _unchecked = Object.keys(props.words)
+                }
+                console.log(_unchecked)
+                setCheckedIndicies(_checkedIndicies)
+                setUnchecked(_unchecked)
             }
-            // unchecked = unchecked.filter((element, index, arr) => {
-            //     return index !== wordOnDisplay
-            // })
+            resetInput()
             if(Object.keys(unchecked).length === 0) {
-                unchecked = Object.keys(props.words)
+                resetAll()
             }
-            document.getElementById("input").value = ""
-            document.getElementById("hint").innerHTML = ""
-            wordOnDisplay = randomProperty(unchecked)
-            document.getElementById("word").innerHTML = "Riječ na hrvatskom: "+wordOnDisplay
-            document.getElementById("wordsLeft").innerHTML = "Riječi preostalo: "+unchecked.length
-            hintBeingUsed = false
         }
     }
-    function giveHint(){
-        hintBeingUsed = true
-        document.getElementById("hint").innerHTML = "hint: "+props.words[wordOnDisplay]
-        document.getElementById("wordsLeft").innerHTML = "Riječi preostalo: "+unchecked.length
+    function giveHint() {
+        setHintBeingUsed(true)
     }
 
     return (
@@ -107,10 +151,10 @@ const Tester = (props) => {
             <div className={"horizontal-center"}>
                 <h1>Rešetanje latinskog</h1>
                 <br/>
-                <Button variant={"outlined"}>Odaberi Riječi</Button>
+                <Button onClick={() => {setOpenSettings(true)}} variant={"outlined"}>Odaberi Riječi</Button>
                 <br/>
                 <p style={{}} id={"wordsLeft"}>
-                    Riječi preostalo: {unchecked.length}
+                    {"Riječi preostalo: "+unchecked.length}
                 </p>
                 <p style={{fontWeight: 500}} id={"word"}>
                     Riječ na hrvatskom: {wordOnDisplay}
@@ -121,9 +165,9 @@ const Tester = (props) => {
                 <br/>
                 <br/>
                 <Button variant={"outlined"} onClick={giveHint}>Rješenje</Button>
-                <p id={"hint"}></p>
+                <Typography variant={'p'} sx={{display:(hintBeingUsed ? 'block' : 'none')}} id={"hint"}>{"rjesenje: "+props.words[wordOnDisplay]}</Typography>
                 <br/><br/><br/>
-                <SettingsDialog onClose={(_)=>{}} open={true} selectedValue={selectedValue}/>
+                <ButtonSelectionDialog onClose={closeSettings} open={openSettings} onSave={handleSave} selected={props.vjezbe_ids}/>
             </div>
         </>
     )
@@ -131,17 +175,18 @@ const Tester = (props) => {
 Tester.propTypes = {
     words: PropTypes.object.isRequired,
     setVjezbe_ids: PropTypes.func.isRequired,
+    vjezbe_ids: PropTypes.array.isRequired,
 }
-
 
 
 const LatinPractice = () => {
 
     let vjezbe_cookie = getCookie("vjezbe_ids")
     if(vjezbe_cookie == undefined){
-        setCookie(["36", "37"].join(" "))
-        vjezbe_cookie = ["36", "37"]
-    }
+        const initial = [] // in the form ['32', ..., '42']
+        setCookie([].join(initial))
+        vjezbe_cookie = initial
+    } else vjezbe_cookie = vjezbe_cookie.split(' ')
 
     const [vjezbe_ids, setVjezbeIds] = useState(vjezbe_cookie);
 
@@ -152,10 +197,12 @@ const LatinPractice = () => {
                 method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFCookie(),
             },
                 body: JSON.stringify({
                     selected: vjezbe_ids.join(" "),
-                })
+                }),
+                credentials: 'same-origin',
             }
         ).then(res => {
             //check status code(guard clause)
@@ -165,21 +212,19 @@ const LatinPractice = () => {
             return res
         }).then(res => res.json()
             .then(data => {
-                console.log(data)
                 setWords(data);
             }))
     }, [vjezbe_ids]);
 
     return (
         <>
-            <Tester words={words} setVjezbe_ids={setVjezbeIds}/>
+            <Tester words={words} setVjezbe_ids={setVjezbeIds} vjezbe_ids={vjezbe_ids}/>
         </>
     )
 
 
 
 }
-
 
 
 export default LatinPractice;

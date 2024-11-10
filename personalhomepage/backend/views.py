@@ -1,5 +1,6 @@
 import random
 
+import django.views.decorators.csrf
 from django.http import JsonResponse
 from django.utils.datastructures import MultiValueDictKeyError
 

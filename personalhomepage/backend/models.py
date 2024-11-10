@@ -49,3 +49,12 @@ class AdminUser(models.Model):
 
     def __str__(self):
         return str(self.id) + " | " + str(self.username)
+
+
+class LatinWords(models.Model):
+    id = models.AutoField(primary_key=True)
+    excercise_id = models.IntegerField(unique=True)
+    words = models.TextField()
+
+    def __str__(self):
+        return "Vjezba " + str(self.excercise_id)

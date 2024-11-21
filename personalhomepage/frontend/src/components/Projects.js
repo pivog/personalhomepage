@@ -21,20 +21,22 @@ const Projects = () => {
 
     return (
         <div>
+            <Box height={"16px"}/>
             <Divider/>
             {
                 projectElements.map((value, index) => (
                     <Link href={`/project?id=${value.id}`} sx={{textDecoration:"none"}}>
                         <Box>
-                            <Box height={"10px"}/>
+                            <Box height={"32px"}/>
                             <Box width={"100%"} justifyContent={"center"} flexDirection={"row"} display={"flex"}>
-                                <Box width={"fit-content"}><img className={"card mid-image"} src={value.imgUrl} alt={value.imgUrl}/></Box>
+                                {/*<Box textAlign={"center"} width={"fit-content"}><Typography className={"vertical-center"} sx={{width:"fit-content", color:"#ffffff"}} variant={"h4"}>{index+1}.</Typography></Box>*/}
+                                {/*<Box width={"20px"}/>*/}
+                                <Box sx={{width:{sx: "auto", sm: "fit-content"}, display:{xs:"none", sm:"block"}}}><img className={"card mid-image"} src={value.imgUrl} alt={value.imgUrl}/></Box>
                                 <Box width={"20px"}/>
-                                <Box width={"fit-content"}><Typography className={"vertical-center"} sx={{width:"fit-content", color:"#ffffff"}} variant={"h4"}>{value.title}</Typography></Box>
+                                <Box textAlign={"center"} width={"fit-content"}><Typography className={"vertical-center"} sx={{width:"fit-content", color:"#ffffff"}} variant={"h4"}>{value.title}</Typography></Box>
                             </Box>
-                            <Box height={"6px"}/>
+                            <Box height={"32px"}/>
                             <Divider/>
-                            <Box height={"6px"}/>
                         </Box>
                     </Link>
                 ))

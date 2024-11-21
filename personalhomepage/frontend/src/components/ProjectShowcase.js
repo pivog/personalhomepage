@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {useSearchParams} from "react-router-dom";
 import {Link} from "@mui/material";
-import {Image} from "@mui/icons-material";
 
 const projectShowcase = () => {
     const [params] = useSearchParams()
@@ -21,10 +20,12 @@ const projectShowcase = () => {
     }, []);
 
     return (
-        <Box textAlign={"center"}>
+        <Box display={"flex"} flexDirection={"column"} textAlign={"center"} justifyItems={"center"}>
             <Typography variant={"h3"}>{project["title"]}</Typography>
             <br/><br/>
-            <img src={project["imgUrl"]} style={{height:"300px"}} alt={"picture of the project"}/>
+            <Box sx={{height:{xs:"100px", sm:"300px"}, width:{xs:"100px", sm:"300px"}}} className={"horizontal-center"}>
+                <img src={project["imgUrl"]} style={{height:"100%", width:"100%"}} alt={"picture of the project"}/>
+            </Box>
             <br/><br/>
             <Typography fontSize={"20px"}>{project["body"]}</Typography>
             <br/><br/>

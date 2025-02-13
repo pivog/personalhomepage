@@ -1,1 +1,3 @@
 /personalhomepage/db.sqlite3
+personalhomepage/frontend/node_modules
+.venv

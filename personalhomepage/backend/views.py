@@ -1,8 +1,11 @@
+from http.client import HTTPResponse
+import os
 import random
 
-import django.views.decorators.csrf
-from django.http import JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.utils.datastructures import MultiValueDictKeyError
+
+from personalhomepage.settings import PROTECTED_PATH
 
 from .models import Post, ChessGame, Project, PersonalChessGame, LatinWords
 import re
@@ -186,3 +189,39 @@ def get_latin_words(request):
     words_dict = dict([(word[0], word[1]) for word in [word.replace("'", "").replace("\r", "").split(":") for word in words]])
     print(words_dict)
     return JsonResponse(words_dict, status=200)
+
+
+@api_view(['POST'])
+def get_download_list(request):
+    # check token
+    user = get_object_or_404(Token, key=request.data['token']).user
+    if not user.is_superuser:
+         return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
+
+    # check available files in /protected/
+    filenames = []
+    for root, dirs, files in os.walk(PROTECTED_PATH):
+        for file in files:
+            filenames.append(file)
+
+    output = filenames
+
+    return JsonResponse(output, status=200, safe=False)
+
+
+@api_view(["POST"])
+def download_file(request):
+    user = get_object_or_404(Token, key=request.data["token"]).user
+    if not user.is_superuser:
+        return Response("unauthorised", status=status.HTTP_404_NOT_FOUND)
+
+    with open(PROTECTED_PATH+"/"+request.data["filename"], "rb") as f:
+        response = HttpResponse(
+            f.read(),
+            content_type='text/plain',  # it's a download, mime type doesn't matter
+            headers={
+                'Content-Disposition': f"attachment; filename={request.data["filename"]}",
+                'Cache-Control': 'no-cache'  # files are dynamic, prevent caching
+            }
+        )
+        return response

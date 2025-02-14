@@ -1,3 +1,5 @@
 /personalhomepage/db.sqlite3
 personalhomepage/frontend/node_modules
 .venv
+personalhomepage/selftest-cert.crt
+personalhomepage/selftest-cert.key

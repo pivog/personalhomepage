@@ -15,6 +15,7 @@ import ListAllPersonalChesGames from "./ListAllPersonalChesGames";
 import Login from "./Login";
 import PersonalChessGame from "./PersonalChessGame";
 import LatinVerbs from "./LatinVerbs";
+import DownloadPage from "./Download";
 
 const App = ({setUsername}) => {
     return (
@@ -33,6 +34,7 @@ const App = ({setUsername}) => {
                 <Route path="/login/" element={<Login  setUsername={(_username)=>setUsername(_username)}/>}/>
                 <Route path="/article/:id" element={<Article/>}/>
                 <Route path="/latinskiglagoli" element={<LatinVerbs/>}/>
+                <Route path="/downloads/" element={<DownloadPage/>}/>
                 <Route path="/latinski/" element={<LatinPractice/>}/>{/* deprecated, removed from navbar */}
             </Routes>
         </Box>

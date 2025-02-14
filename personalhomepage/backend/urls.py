@@ -1,4 +1,4 @@
-from .views import get_article, get_chess_game, get_all_projects, get_project, get_all_chess_games_names, login, \
+from .views import download_file, get_article, get_chess_game, get_all_projects, get_download_list, get_project, get_all_chess_games_names, login, \
     get_all_personal_chess_games_names, get_personal_chess_game, get_latin_words
 from django.urls import path
 
@@ -12,4 +12,6 @@ urlpatterns = [
     path("getproject", get_project),
     path("getlatinwords", get_latin_words),
     path("login", login),
+    path("listdownloads", get_download_list),
+    path("downloadfile", download_file),
 ]

@@ -14,6 +14,7 @@ urlpatterns = [
     path("latinski", index),
     path("project", index),
     path("listchessgames", index),
+    path("login", index),
     path("listpersonalchessgames", index),
     path("downloads", index),
 ]

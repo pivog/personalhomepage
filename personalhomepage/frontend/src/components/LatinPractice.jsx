@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 
 
 const ButtonSelectionDialog = (props) => {
-    const available = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46"];
+    const available = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50"];
   const [selectedButtons, setSelectedButtons] = useState(available.map((value, _)=>{
       return [value, props.selected.includes(value)]
   }));

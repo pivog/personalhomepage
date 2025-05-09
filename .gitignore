@@ -1,5 +1,13 @@
 /personalhomepage/db.sqlite3
-personalhomepage/frontend/node_modules
-.venv
+personalhomepage/frontend/node_modules/
+.venv/
 personalhomepage/selftest-cert.crt
 personalhomepage/selftest-cert.key
+/personalhomepage/frontend/static/images/
+/personalhomepage/backend/__pycache__/
+/personalhomepage/frontend/__pycache__/
+personalhomepage/frontend/__pycache__
+personalhomepage/frontend/__pycache__
+personalhomepage/backend/__pycache__
+personalhomepage/personalhomepage/__pycache__
+personalhomepage/db.sqlite3

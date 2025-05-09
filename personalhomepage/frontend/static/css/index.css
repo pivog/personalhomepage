@@ -115,3 +115,7 @@ html, body {
     align-items: center;
     justify-content: center;
 }
+
+a {
+    color: #07aee0;
+}

@@ -10,4 +10,4 @@ services:
       - '81:81'
     volumes:
       - $PWD.:/var/www/html:rw
-      - /etc/letsencrypt/:/etc/letsencrypt/
+      - /etc/letsencrypt:/etc/letsencrypt

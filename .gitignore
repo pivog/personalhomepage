@@ -12,3 +12,5 @@ personalhomepage/backend/__pycache__
 personalhomepage/personalhomepage/__pycache__
 personalhomepage/db.sqlite3
 personalhomepage/frontend/static
+personalhomepage/backend/migrations/__pycache__
+personalhomepage/frontend/migrations/__pycache__

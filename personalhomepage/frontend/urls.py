@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import index
+from .views import index, piva_za_adnu
 
 urlpatterns = [
     # re_path(r".*", index),
@@ -17,4 +17,5 @@ urlpatterns = [
     path("login", index),
     path("listpersonalchessgames", index),
     path("downloads", index),
+    path("piva", piva_za_adnu),
 ]

@@ -8,3 +8,6 @@ def index(request, *args, **kwargs):
 
 def redirectToCounter(request):
     return redirect("/counter")
+
+def piva_za_adnu(request):
+    return render(request, "frontend/piva.html")
